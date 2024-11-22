@@ -1,0 +1,92 @@
+body{
+    margin:auto
+}
+
+/* AUTENTIFICAITON FORMS --------------------------------------------------------------------------------   */
+/**/
+
+.sg-autentification-row{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+   
+   
+}
+.sg-autentification-col{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  
+    margin: 5px;
+}
+
+.sg-autentification-col label{
+    margin-top: 10px;
+}
+
+.sg-autentification-col input{
+   text-align: center;
+   font-size: large;
+   
+    min-width: 200px;
+    min-height: 30px;
+    
+    border: 2px solid black;
+    border-radius: 15px;
+}
+
+.sg-autentification-col button{
+    width:210px;
+    height: 40px;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+.sg-autentificaiton-form-container-div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ 
+}
+
+.sg-autentification-scnd-btn{
+    width:210px;
+    height: 40px;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+.sg-autentification-scnd-btn-div{
+    position: relative;
+   right:120px;
+    bottom: 55px;
+}
+
+.sg-autentification-form-btn{
+    position: relative;
+    left:240px;
+    
+
+}
+
+.sg-link-register{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/*------------------------------------------------------------------------------------------------------------*/
+
+@media (max-width: 768px) {
+    .sg-autentification-row{
+        display: block;}
+
+        .sg-autentification-scnd-btn-div{
+            position:initial;
+        }
+        .sg-autentification-form-btn{
+            position: initial;
+        }
+}
