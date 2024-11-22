@@ -10,6 +10,7 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="../izgled/biblioreg.css" >
+    <link rel="stylesheet" href="../izgled/biblioreg_navbar.css" >
     <?php
     $conn;
 include("../dijelovi/univerzalni/baza.php");

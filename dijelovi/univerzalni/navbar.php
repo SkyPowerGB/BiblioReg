@@ -59,4 +59,4 @@
 
    </div>
 
-
+   <script src="../funkcionalnost/univerzalna/navbar.js"></script>

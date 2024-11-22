@@ -78,6 +78,7 @@ body{
 }
 
 /*------------------------------------------------------------------------------------------------------------*/
+/*/Container book-shelf  pocetna: */
 .sg-book-container{
     background-color: gray;
     
@@ -117,186 +118,39 @@ body{
     flex-wrap: wrap;
 }
 
-/*-------------------------------------------------------------------------------------------------------------------*/
-/* NAVIGA */
-.sg-nav-bar-container{
-    width: 100%;
-    height: 50px;
-    padding: 0;
+/*--------------------------------------------------------------*/
+/*NEW BOOK FORM*/
+.sg-new-book-form{
+    width: 200px;
+    aspect-ratio: 2/3;
+    display: flex;
+    flex-direction: column;
+   padding:0;
+   
+}
+.sg-new-book-close-form-btn-container{
     display: flex;
     flex-direction: row;
-    background-color: rgb(56, 48, 39);
-    color: white;
-    align-items: center;
-
+    justify-content: right;
 }
-.sg-nav-bar-container ul{
-    height: 100%;
-
-    list-style-type: none;
-   display: flex;
-
-   flex:1;
-   flex-direction: row;
-   align-items: center;
-   
-
-}
-
-.sg-nav-bar-item{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  justify-content: center;
-    margin: 10px;
-
-}
-.sg-nav-bar-item a{
-   padding: 5px;
-    height: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  justify-content: center;
-  text-decoration: none;
- 
-  color: white;
-}
-.sg-nav-bar-item a:hover{
-    cursor: pointer;
-    background-color: rgb(96, 81, 68);
-}
-
-.sg-nav-bar-item-selected{
-    background-color: rgb(96, 81, 68);
-    text-decoration: underline;
-}
-
-.sg-nav-logo{
-    width: 70px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    height: 100%;
-}
-.sg-nav-logo img{
-    width: 50px;
-}
-
-.sg-nav-account{
-    height: 50px;
-    
-}
-.sg-nav-account button{
-    height: 100%;
-    width: 200px;
-    background-color: inherit;
-    border:none;
-    font-size:medium;
-    color:inherit;
-}
-
-.sg-nav-account button:hover{
-    background-color: blanchedalmond;
-    cursor: pointer;
-  
-    background-color: rgb(96, 81, 68);
-}
-/*------------------------------------------*/
-/*COLLAPSED*/
-.nav-bar-container-collapsed{
-    
+.sg-new-book-form-part{
+    margin-top:15px ;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-   align-items: center;
-   margin: 0;
-   
-   
-}
-.nav-bar-container-collapsed ul{
-    list-style-type: none;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-}
-.sg-nav-bar-item-c {
-  width: 100%;
-  height:50px;
-  background-color: rgb(56, 48, 39);
   display: flex;
   flex-direction: column;
-  align-items: center;
- 
 }
 
-.sg-nav-bar-item-c a{
-    margin-top: 5px;
-    text-decoration: none;
-    width: 100%;
-    height:50px;
-    background-color: rgb(84, 76, 67);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: large;
-}
-.sg-nav-bar-item-c a:hover{
-    background-color: rgb(136, 128, 119);
-    cursor: pointer;
-}
-
-.nav-bar-hide{
-    display: none;
-}
-
-
-/**habi gumb*/
-.sg-nav-collapsed{
-display: none;
-}
-.sg-nav-collapsed button{
-    width: 50px;
-    height: 50px;
-    border:none;
-    color: white;
-    background-color: rgb(56, 48, 39);
-}
-.sg-nav-collapsed button:hover{  
-    cursor: pointer;
-      background-color: rgb(82, 70, 56);
-}
-
-/*account options*/
-.account-options{
-    width: 300px;
+.sg-form-new-book{
+    margin: 10px;
+    background-color: gainsboro;
+    padding: 15px;
     
-    position: absolute;
-   right: 0px;
-   top:34px;
 }
-
 
 
 @media (max-width: 768px) {
    
-    .sg-nav-account{
-          display: none;
-    }
-    .sg-nav-collapsed{
-        display: block;
-    }
-    .sg-nav-bar-item{
-        display: none;
-    
-    }
+   
     .sg-autentification-row{
         display: block;}
 
