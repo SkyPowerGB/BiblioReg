@@ -1,7 +1,7 @@
 <?php
 $server="localhost";
 $korisnik="root";
-$sifra="";
+$sifra="root";
 $imeBaze="biblioreg";
 
 $conn=new mysqli($server,$korisnik,$sifra,$imeBaze);
