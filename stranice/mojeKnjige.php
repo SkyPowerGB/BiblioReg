@@ -7,7 +7,9 @@ if (!isset($_SESSION["userId"])) {
 }
 
 ?>
-
+ <?php
+    include("../dijelovi/univerzalni/navbar.php");
+   ?>
 
 
 
