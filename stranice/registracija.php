@@ -39,7 +39,7 @@ if (isset($_POST["registerSubmit"])) {
 
 <div class="sg-autentificaiton-form-container-div">
     <h1>Registracija</h1>
-    <form method="POST" action="registracija.php">
+    <form  method="POST" action="registracija.php">
         <div class="sg-autentification-row">
 
             <div class="sg-autentification-col">

@@ -17,6 +17,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
+    
 
     margin: 5px;
 }
@@ -26,7 +27,7 @@ body {
 }
 
 .sg-autentification-col input {
-    text-align: center;
+    
     font-size: large;
 
     min-width: 200px;
@@ -37,6 +38,7 @@ body {
 }
 
 .sg-autentification-col button {
+    
     width: 210px;
     height: 40px;
     border-radius: 15px;
@@ -308,11 +310,11 @@ body {
 }
 
 .sg-confirm-action-form-container-buttons button {
-    width: 100px;
+    width: 120px;
     height: 50px;
     margin-left: 10px;
     color: white;
-    background-color: rgb(119, 83, 67);
+    background-color: rgb(203, 77, 77);
     border: none;
     font-size: large;
     border-radius: 15px;
@@ -330,6 +332,34 @@ body {
      background-color: rgb(67, 57, 38);
     border: none;
     cursor: pointer;
+}
+
+
+/**----ACCOUNT SETTINGS FORMS A---KORISTI OD AUTENTIFIKACIJE klase-------*/
+.sg-account-sttings-form{
+    margin-top: 20px;
+    padding: 20px;
+    color: white;
+    width: 20%;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(79, 63, 37);
+}
+.sg-account-sttings-form label{
+    margin: 4px;
+}
+.sg-account-sttings-form button{
+    width: 100%;
+}
+
+.sg-acc-settings-button{
+    width: 100%;
+}
+.sg-settings-save-btn{
+    align-items: center;
 }
 
 
