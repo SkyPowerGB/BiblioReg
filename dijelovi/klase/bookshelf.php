@@ -38,7 +38,7 @@ class Bookshelf
         if ($knjige != null) {
             while (($row = $knjige->fetch_assoc()) != null) {
 
-                echo ('<div class="sg-book-container">');
+                echo ('<div  class="sg-book-container">');
                 echo ('<form method="POST" action="prikazKnjige.php">');
                 echo ('<input name="idKnjige" type="hidden"' . 'value=' . $row["idKnjiga"] . ' >');
 
@@ -57,7 +57,7 @@ class Bookshelf
                 echo ("<h6>");
                 echo ($row["godina"]);
                 echo ("</h6>");
-
+                echo(   '<input type="hidden" name="idKnjige" value="'.$row["idKnjiga"].'">');
                 echo ("</button>");
                 echo ("</form>");
 

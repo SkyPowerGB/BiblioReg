@@ -40,7 +40,7 @@
    <div id="collapsedNavbar" class="nav-bar-container-collapsed  nav-bar-hide   nav-bar-collapsed">
 
       <ul>
-         <li class="sg-nav-bar-item-c"><a href="">Postavke</a></li>
+         <li class="sg-nav-bar-item-c"><a href="postavke.php">Postavke</a></li>
          <li class="sg-nav-bar-item-c"><a href="pocetna.php">Početna</a></li>
          <li class="sg-nav-bar-item-c"><a href="mojeKnjige.php">Moje knjige</a></li>
          <li class="sg-nav-bar-item-c"><a>Korisnici</a></li>
@@ -53,7 +53,7 @@
 
    <div id="accountOptionsBar" class="account-options nav-bar-hide  nav-bar-wide">
       <ul>
-         <li class="sg-nav-bar-item-c"><a href="">Postavke</a></li>
+         <li class="sg-nav-bar-item-c"><a href="postavke.php">Postavke</a></li>
          <li class="sg-nav-bar-item-c"><a href="logout.php">Odjava</a></li>
       </ul>
 

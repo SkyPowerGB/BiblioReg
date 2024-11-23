@@ -1,75 +1,77 @@
-body{
-    margin:auto
+body {
+    margin: auto
 }
 
 /* AUTENTIFICAITON FORMS --------------------------------------------------------------------------------   */
 /**/
 
-.sg-autentification-row{
+.sg-autentification-row {
     width: 100%;
     display: flex;
     flex-direction: row;
-   
-   
+
+
 }
-.sg-autentification-col{
+
+.sg-autentification-col {
     width: 100%;
     display: flex;
     flex-direction: column;
-  
+
     margin: 5px;
 }
 
-.sg-autentification-col label{
+.sg-autentification-col label {
     margin-top: 10px;
 }
 
-.sg-autentification-col input{
-   text-align: center;
-   font-size: large;
-   
+.sg-autentification-col input {
+    text-align: center;
+    font-size: large;
+
     min-width: 200px;
     min-height: 30px;
-    
+
     border: 2px solid black;
     border-radius: 15px;
 }
 
-.sg-autentification-col button{
-    width:210px;
+.sg-autentification-col button {
+    width: 210px;
     height: 40px;
     border-radius: 15px;
     margin-top: 10px;
 }
 
-.sg-autentificaiton-form-container-div{
+.sg-autentificaiton-form-container-div {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
- 
+
 }
 
-.sg-autentification-scnd-btn{
-    width:210px;
+.sg-autentification-scnd-btn {
+    width: 210px;
     height: 40px;
     border-radius: 15px;
     margin-top: 10px;
 }
-.sg-autentification-scnd-btn-div{
+
+.sg-autentification-scnd-btn-div {
     position: relative;
-   right:120px;
+    right: 120px;
     bottom: 55px;
 }
 
-.sg-autentification-form-btn{
+.sg-autentification-form-btn {
     position: relative;
-    left:240px;
-    
+    left: 240px;
+
 
 }
 
-.sg-link-register{
+.sg-link-register {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -79,9 +81,9 @@ body{
 
 /*------------------------------------------------------------------------------------------------------------*/
 /*/Container book-shelf  pocetna: */
-.sg-book-container{
+.sg-book-container {
     background-color: gray;
-    
+
     width: 200px;
     aspect-ratio: 2/3;
     display: flex;
@@ -89,30 +91,31 @@ body{
     align-items: center;
     margin: 10px;
 }
-.sg-book-container form{
+
+.sg-book-container form {
     width: 100%;
     aspect-ratio: 2/3;
-    
+
     display: flex;
     flex-direction: column;
 }
 
-.sg-book-button{
+.sg-book-button {
     width: 200px;
     aspect-ratio: 2/3;
     background-color: gray;
-    border:none;
+    border: none;
     border-left: 14px solid rgb(55, 55, 55);
 }
 
-.sg-book-button:hover{   
-     background-color: rgb(168, 168, 168);
-     border-left: 14px solid rgb(86, 86, 86);
+.sg-book-button:hover {
+    background-color: rgb(168, 168, 168);
+    border-left: 14px solid rgb(86, 86, 86);
     cursor: pointer;
 }
 
 
-.sg-book-shelf{
+.sg-book-shelf {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -120,44 +123,234 @@ body{
 
 /*--------------------------------------------------------------*/
 /*NEW BOOK FORM*/
-.sg-new-book-form{
+.sg-new-book-form {
     width: 200px;
     aspect-ratio: 2/3;
     display: flex;
     flex-direction: column;
-   padding:0;
-   
+    padding: 0;
+
 }
-.sg-new-book-close-form-btn-container{
+
+.sg-new-book-close-form-btn-container {
     display: flex;
     flex-direction: row;
     justify-content: right;
 }
-.sg-new-book-form-part{
-    margin-top:15px ;
+
+.sg-new-book-form-part {
+    margin-top: 15px;
     width: 100%;
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
-.sg-form-new-book{
+.sg-form-new-book {
     margin: 10px;
     background-color: gainsboro;
     padding: 15px;
-    
+
+}
+
+/*----PRIKAZ KNJIGE STRANICA---------------------------------*/
+
+.sg-book-front {
+    width: 25%;
+    min-width: 200px;
+    aspect-ratio: 2/3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: brown;
+    border-left: 20px solid rgb(76, 15, 15);
+    margin: auto;
+    margin-top: 10px;
+    text-align: center;
+
+}
+
+/*Forma za edit*/
+.sg-book-front-form {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
+}
+
+.sg-book-front-form label {
+    margin-top: 10px;
+    color: rgb(252, 187, 179);
+}
+
+.sg-book-front-form-input {
+    width: 70%;
+    background-color: brown;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: xx-large;
+    text-align: center;
+    border-bottom: 2px solid black;
+}
+
+.sg-book-front-form button {
+    margin-top: 50px;
+    height: 50px;
+    width: 70%;
+    background-color: rgb(176, 102, 102);
+    border: none;
+    color: white;
+    font-size: larger;
+}
+
+.sg-book-front-form button:hover {
+    background-color: rgb(126, 67, 67);
+    cursor: pointer;
+
+}
+
+/*prikaz knjige raspored stranice*/
+.sg-content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: bisque;
+    min-height: 99vh;
+
+}
+
+.sg-content-mid {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.sg-sidebar {
+    width: 200px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: rgb(84, 57, 44);
+    border-right: 15px solid rgb(135, 93, 71);
+    padding-top: 20px;
+
+}
+
+.sg-sidebar-btn-container {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    border-bottom: 15px solid rgb(135, 93, 71);
+
+}
+
+.sg-sidebar-btn-container button {
+    width: 80%;
+    height: 70px;
+    border: none;
+
+    font-size: large;
+}
+
+.sg-sidebar-btn-container button:hover {
+    cursor: pointer;
+}
+
+.sg-sidebar-h1{
+    color: white;
+}
+
+/*----------------------------------------------------------------------------------*/
+/*CONFIRM ACTION warning MSG*/
+.sg-confirm-action-form-container {
+    width: 40%;
+    min-width: 200px;
+    min-height: 200px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border: 10px solid red;
+    border-radius: 65px;
+    background-color:white;
+    top: 20%;
+    left: 30%;
+
+}
+
+.sg-confirm-action-form-container-buttons {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.sg-confirm-action-form {
+    margin: 10px;
+}
+
+.sg-confirm-action-form-container-buttons button {
+    width: 100px;
+    height: 50px;
+    margin-left: 10px;
+    color: white;
+    background-color: rgb(119, 83, 67);
+    border: none;
+    font-size: large;
+    border-radius: 15px;
+}
+.sg-confirm-action-form-container-buttons button:hover{
+    background-color: rgb(67, 57, 38);
+    cursor: pointer;
+}
+
+#sgConfirmActionBtnCancel{
+    background-color: rgb(119, 83, 67);
+    border: 3px solid rgb(10, 199, 224);
+}
+#sgConfirmActionBtnCancel:hover{
+     background-color: rgb(67, 57, 38);
+    border: none;
+    cursor: pointer;
 }
 
 
-@media (max-width: 768px) {
-   
-   
-    .sg-autentification-row{
-        display: block;}
 
-        .sg-autentification-scnd-btn-div{
-            position:initial;
-        }
-        .sg-autentification-form-btn{
-            position: initial;
-        }
+/*UNIVERZALNO hide*/
+.sg-hide-div{
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+
+    .sg-autentification-row {
+        display: block;
+    }
+
+    .sg-autentification-scnd-btn-div {
+        position: initial;
+    }
+
+    .sg-autentification-form-btn {
+        position: initial;
+    }
 }
