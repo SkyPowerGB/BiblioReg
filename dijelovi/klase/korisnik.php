@@ -12,6 +12,8 @@ class Korisnik
     public $email;
     public $aktivan;
     public $isAdmin;
+
+    public $roleName;
     public $password;
 
 
@@ -24,12 +26,13 @@ class Korisnik
 
     public function readUserData($userId)
     {
-        $this->userId=$userId;
-        $sql = "SELECT * FROM korisnici WHERE idKorisnik=?";
+        $this->userId = $userId;
+        $sql = "SELECT * FROM korisnici join uloge on ulogaId=idUloga WHERE idKorisnik=? ";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("d", $userId);
         if ($stmt->execute()) {
             $row = $stmt->get_result()->fetch_assoc();
+            if($row==null){return false;}
             $stmt->close();
             $this->ime = $row["ime"];
             $this->prezime = $row["prezime"];
@@ -40,7 +43,11 @@ class Korisnik
             } else {
                 $this->isAdmin = false;
             }
+            $this->roleName = $row["nazivUloga"];
+            $this->aktivan=$row["aktivan"];
             return true;
+
+           
         }
         return false;
     }
@@ -100,43 +107,47 @@ class Korisnik
 
 
     public function updateUserData()
-{   
-   // id ime , prezime , aktivan,email,sifra,uloga
-    $sql = "SELECT azurirajKorisnika(?,?,?,?,?,?,?) AS output";
-    $stmt = $this->conn->prepare($sql);
-    
-    
-    $uloga = null;  
-    
-   
-    if (!$stmt->bind_param(
-        "dssdsss",  
-        $this->userId,
-        $this->ime,
-        $this->prezime,
-        $this->aktivan,
-        $this->email,
-        $this->password,
-        $uloga
-    )) {
-        return false; 
-    }
-    
- 
-    if ($stmt->execute()) {
-        $res = $stmt->get_result()->fetch_assoc()["output"];
-        $stmt->close();
-        
-      
-        if ($res != -1) {
-            return true; 
+    {
+        // id ime , prezime , aktivan,email,sifra,uloga
+        $sql = "SELECT azurirajKorisnika(?,?,?,?,?,?,?) AS output";
+        $stmt = $this->conn->prepare($sql);
+
+
+        if ($this->isAdmin) {
+            $this->role = "administrator";
         }
-        
-        return false; 
+
+
+        if (
+            !$stmt->bind_param(
+                "dssdsss",
+                $this->userId,
+                $this->ime,
+                $this->prezime,
+                $this->aktivan,
+                $this->email,
+                $this->password,
+                $this->roleName
+            )
+        ) {
+            return false;
+        }
+
+
+        if ($stmt->execute()) {
+            $res = $stmt->get_result()->fetch_assoc()["output"];
+            $stmt->close();
+
+
+            if ($res != -1) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
     }
-    
-    return false; 
-}
 
     //* za login ako se potvrdi password se moze procitat posto se id sprema */
 
@@ -163,7 +174,30 @@ class Korisnik
 
 
 
+    public function deleteUser($uid)
+    {
+       
+       
 
+            try {
+                $sql = "select deleteUser(?) as output";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param("d", $uid);
+                if ($stmt->execute()) {
+                    $out = $stmt->get_result()->fetch_assoc()["output"];
+                    $stmt->close();
+                    if ($out == 1) {
+                        return true;
+                    }
+
+                }
+
+            } catch (Exception $e) {
+                return false;
+            }
+        
+        return false;
+    }
 
 
 
