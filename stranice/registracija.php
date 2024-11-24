@@ -94,7 +94,7 @@ if (isset($_POST["registerSubmit"])) {
 
 
     if (!$korisnik->validacijeImePrezime($firstName)) {
-        $validator->showValidationMsg($fNameInput,"Neispravno Ime");
+        $validator->showValidationMsg($fNameInput,$korisnik->getValidationMsg());
         $validationOk = false;
     }
     ;
@@ -102,11 +102,11 @@ if (isset($_POST["registerSubmit"])) {
         $validationOk = false;
     }
     if (!$validationOk = $korisnik->validacijaEmail($email)) {
-        $validator->showValidationMsg($emailInput,"Neipravan email");
+        $validator->showValidationMsg($emailInput,$korisnik->getValidationMsg());
         $validationOk = false;
     }
     if (!$validationOk = $korisnik->validacijaSifre($password, $passwordRpt)) {
-        $validator->showValidationMsg($pswrdInput,"NeispravnaLozinka");
+        $validator->showValidationMsg($pswrdInput,$korisnik->getValidationMsg());
         $validationOk = false;
     }
     ;
