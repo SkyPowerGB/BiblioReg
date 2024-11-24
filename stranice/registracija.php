@@ -1,12 +1,85 @@
 <?php
 include("../dijelovi/head.php");
 include("../dijelovi/klase/korisnik.php");
+include("../dijelovi/klase/validator.php");
+
 $korisnik = new Korisnik($conn);
-$firstName;
-$lastName;
-$email;
-$password;
-$passwordRpt;
+$validator = new Validator();
+
+$firstName = null;
+$lastName = null;
+$email = null;
+$password=null;
+$passwordRpt=null;
+
+$fNameInput = new FormInput(
+    "idFnameInput",
+    "idFnameLbl",
+    "nameInput",
+    "text",
+    $firstName,
+    "Ime*:",
+    null,
+    null
+
+);
+$lNameInput = new FormInput(
+    "idLnameInput",
+    "idLnameLbl",
+    "sNameInput",
+    "text",
+    $lastName,
+    "Prezime*:",
+    null,
+    null
+);
+
+$emailInput = new FormInput(
+    "idEmailInput",
+    "idEmailLbl",
+    "emailInput",
+    "text",
+    $email,
+    "Email*:",
+    null,
+    null
+);
+
+$pswrdInput= new FormInput(
+    "idPswrdInput",
+    "idPswrdLbl",
+    "pswrdInput",
+    "password",
+    $password,
+    "Lozinka*:",
+    null,
+    null
+);
+
+
+$pswrdRptInput=new FormInput(
+    "idRptPswrdInput",
+    "idRptPswrdLbl",
+    "pswrdRptInput",
+    "password",
+    $passwordRpt,
+    "Ponoviti Lozinku*:",
+    null,
+    null
+);
+
+
+
+
+
+
+
+?>
+
+
+<script src="../funkcionalnost/autentifikacija/registracija.js"></script>
+
+<?php
 
 if (isset($_POST["registerSubmit"])) {
 
@@ -18,10 +91,25 @@ if (isset($_POST["registerSubmit"])) {
 
     $validationOk = true;
 
-    $validationOk = $korisnik->validacijeImePrezime($firstName);
-    $validationOk = $korisnik->validacijeImePrezime($lastName);
-    $validationOk = $korisnik->validacijaEmail($email);
-    $validationOk = $korisnik->validacijaSifre($password, $passwordRpt);
+
+
+    if (!$korisnik->validacijeImePrezime($firstName)) {
+        $validator->showValidationMsg($fNameInput,"Neispravno Ime");
+        $validationOk = false;
+    }
+    ;
+    if (!$korisnik->validacijeImePrezime($lastName)) {
+        $validationOk = false;
+    }
+    if (!$validationOk = $korisnik->validacijaEmail($email)) {
+        $validator->showValidationMsg($emailInput,"Neipravan email");
+        $validationOk = false;
+    }
+    if (!$validationOk = $korisnik->validacijaSifre($password, $passwordRpt)) {
+        $validator->showValidationMsg($pswrdInput,"NeispravnaLozinka");
+        $validationOk = false;
+    }
+    ;
 
     if ($validationOk) {
         $password = password_hash($password, PASSWORD_DEFAULT);
@@ -39,17 +127,21 @@ if (isset($_POST["registerSubmit"])) {
 
 <div class="sg-autentificaiton-form-container-div">
     <h1>Registracija</h1>
-    <form id="jsAutValidate" method="POST" action="registracija.php">
+    <form method="POST" action="registracija.php">
         <div class="sg-autentification-row">
 
+
             <div class="sg-autentification-col">
-                <label id="idFnameLbl" >Ime*:</label>
-                <input id="idFnameInput" type="text" name="nameInput">
+                <?php
+                $fNameInput->generateInput();
+                ?>
+
             </div>
 
             <div class="sg-autentification-col">
-                <label id="idLnameLbl" >Prezime*:</label>
-                <input id="idLnameInput" type="text" name="sNameInput">
+                <?php
+                $lNameInput->generateInput();
+                ?>
             </div>
 
         </div>
@@ -57,18 +149,18 @@ if (isset($_POST["registerSubmit"])) {
 
         <div class="sg-autentification-row">
             <div class="sg-autentification-col">
-                <label id="idEmailLbl" >Email*:</label>
-                <input id="idEmailInput" type="text" name="emailInput">
+                <?php
+                $emailInput->generateInput();
+                ?>
             </div>
         </div>
 
         <div class="sg-autentification-row">
             <div class="sg-autentification-col">
-                <label id="idPswrdLbl" >Lozinka*:</label>
-                <input id="idPswrdInput" type="password" name="pswrdInput">
-
-                <label id="idRptPswrdLbl">Ponoviti Lozinku*:</label>
-                <input id="idRptPswrdInput" name="pswrdRptInput">
+            <?php
+                $pswrdInput->generateInput();
+                $pswrdRptInput->generateInput();
+                ?>
 
             </div>
 
@@ -92,7 +184,7 @@ if (isset($_POST["registerSubmit"])) {
 </div>
 
 
-<script src="../funkcionalnost/autentifikacija/registracija.js"></script>
+
 
 
 

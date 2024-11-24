@@ -1,6 +1,7 @@
 <?php
 include("../dijelovi/head.php");
 include("../dijelovi/klase/korisnik.php");
+include("../dijelovi/klase/validator.php");
 
 session_start();
 if (!isset($_SESSION["userId"])) {
@@ -9,8 +10,14 @@ if (!isset($_SESSION["userId"])) {
 
 $userIdtoEdit = $_SESSION["userId"];
 $adminEdit = false;
+$dispUserDataHeader = "Uredi račun";
+
+$showForm = null;
 
 $korisnik = new Korisnik($conn);
+$validator = new Validator();
+
+
 
 if (isset($_POST["uid"])) {
     $userIdtoEdit = $_POST["uid"];
@@ -20,26 +27,115 @@ if (isset($_POST["uid"])) {
 if (isset(($_POST["adminEdit"]))) {
 
     $adminEdit = $_POST["adminEdit"];
-}
+    $dispUserDataHeader = "Uredi Korisnika";
 
+}
+// TO DO zamijeniti admin edit sa korisnik->isAdmin($id)  (treba napraviti metodu isAdmin($id))
 if ($userIdtoEdit != $_SESSION["userId"] && !$adminEdit) {
     header("Location: pocetna.php");
 }
 
+
 $korisnik->readUserData($userIdtoEdit);
 
 $update = false;
-$validationNotOk = false;
 
 
+
+
+// validator FormInput vars
+$fNameInput;
+$lNameInput;
+$emailInput;
+$pswrdInput;
+$pswrdRptInput;
+// validator FormInput vars prepare   , if-> za zatvoriti dijelove
+if (true) {
+    //ime
+    if (true) {
+        $fNameInput = new FormInput(
+            "idFnameInput",
+            "idFnameLbl",
+            "ime",
+            "text",
+            $korisnik->ime,
+            "Ime:",
+            null,
+            null
+
+        );
+    }
+    //prezime
+    if (true) {
+        $lNameInput = new FormInput(
+            "idLnameInput",
+            "idLnameLbl",
+            "prezime",
+            "text",
+            $korisnik->prezime,
+            "Prezime:",
+            null,
+            null
+        );
+    }
+    //email
+    if (true) {
+        $emailInput = new FormInput(
+            "idEmailInput",
+            "idEmailLbl",
+            "email",
+            "text",
+            $korisnik->email,
+            "Email*:",
+            null,
+            null
+        );
+    }
+    //pswrd
+    if (true) {
+        $pswrdInput = new FormInput(
+            "idPswrdInput",
+            "idPswrdLbl",
+            "pswrd",
+            "password",
+            "",
+            "Lozinka*:",
+            null,
+            null
+        );
+    }
+    //pswrdRpt
+    if (true) {
+
+        $pswrdRptInput = new FormInput(
+            "idRptPswrdInput",
+            "idRptPswrdLbl",
+            "paswrdRpt",
+            "password",
+            "",
+            "Ponoviti Lozinku*:",
+            null,
+            null
+        );
+    }
+}
+
+$validationOk = true;
 if (isset($_POST["saveFLnames"])) {
+    $showForm = "saveFLnames";
     $update = true;
     $newFirstName = filter_input(INPUT_POST, "ime", FILTER_SANITIZE_STRING);
     $newLastName = filter_input(INPUT_POST, "prezime", FILTER_SANITIZE_STRING);
 
-    $validationNotOk = !$korisnik->validacijeImePrezime($newFirstName);
-    $validationNotOk = !$korisnik->validacijeImePrezime($newLastName);
-
+    if (!$korisnik->validacijeImePrezime($newFirstName) && $validationOk) {
+        $validationOk = false;
+        $validator->showValidationMsg($fNameInput, $korisnik->getValidationMsg());
+    }
+    if (!$korisnik->validacijeImePrezime($newLastName) && $validationOk) {
+        $validator->showValidationMsg($lNameInput, $korisnik->getValidationMsg());
+        $validationOk = false;
+    }
+    echo ("yas" . $update . "/" . $validationOk);
     $korisnik->ime = $newFirstName;
     $korisnik->prezime = $newLastName;
 
@@ -49,6 +145,7 @@ if (isset($_POST["saveFLnames"])) {
 }
 
 if (isset($_POST["pswrdChng"])) {
+    $showForm = "pswrdChng";
     $update = true;
     $korisnik->ime = null;
     $korisnik->prezime = null;
@@ -58,7 +155,12 @@ if (isset($_POST["pswrdChng"])) {
     $pswrd = filter_input(INPUT_POST, "pswrd", FILTER_SANITIZE_STRING);
     $pswrdRpt = filter_input(INPUT_POST, "paswrdRpt", FILTER_SANITIZE_STRING);
 
-    $validationNotOk = !$korisnik->validacijaSifre($pswrd, $pswrdRpt);
+    if (!$korisnik->validacijaSifre($pswrd, $pswrdRpt) && $validationOk) {
+        $validator->showValidationMsg($pswrdInput,$korisnik->getValidationMsg());
+        $validationOk = false;
+
+    }
+
     $pswrd = password_hash($pswrd, PASSWORD_DEFAULT);
     $korisnik->password = $pswrd;
 
@@ -67,6 +169,7 @@ if (isset($_POST["pswrdChng"])) {
 }
 
 if (isset($_POST["chngEmail"])) {
+    $showForm = "chngEmail";
     $update = true;
     $korisnik->ime = null;
     $korisnik->prezime = null;
@@ -74,14 +177,18 @@ if (isset($_POST["chngEmail"])) {
     $korisnik->password = null;
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
 
-    $validationNotOk = !$korisnik->validacijaEmail($email);
+    if (!$korisnik->validacijaEmail($email) && $validationOk) {
+        $validationOk = false;
+        $validator->showValidationMsg($emailInput,$korisnik->getValidationMsg());
+    }
 
     $korisnik->email = $email;
 
 }
 
 if (isset($_POST["chngRole"])) {
-   
+
+    $showForm = "chngRole";
     $update = true;
     $korisnik->ime = null;
     $korisnik->prezime = null;
@@ -93,31 +200,42 @@ if (isset($_POST["chngRole"])) {
     echo ($korisnik->roleName);
 }
 
-if ($update) {
+if ($update && $validationOk) {
 
-    if ($korisnik->updateUserData()) {
+    if ($korisnik->updateUserData() && !$adminEdit) {
         header("Location:postavke.php");
+    } else {
+        header("Location:korisnici.php");
     }
 
+
+} else {
+    unset($_POST["saveFLnames"]);
+    unset($_POST["pswrdChng"]);
+    unset($_POST["chngEmail"]);
+    unset($_POST["chngRole"]);
 
 }
 
 
 if (isset($_POST["deactivateUAC"])) {
+
     $update = true;
-
-
     $korisnik->aktivan = false;
     $korisnik->password = null;
     $korisnik->email = null;
-    if(!$korisnik->isAdmin){
-    $korisnik->updateUserData();
+    if (!$korisnik->isAdmin) {
+        $korisnik->updateUserData();
+    }
+    if ($korisnik->userId == $_SESSION["userId"]) {
+        header("Location: logout.php");
     }
     if ($adminEdit) {
-
+        Header("Location: korisnici.php");
     } else {
         Header("Location: logout.php");
     }
+
 
 }
 
@@ -127,6 +245,7 @@ if (isset($_POST["deactivateUAC"])) {
 
 <?php
 include("../dijelovi/univerzalni/navbar.php");
+$korisnik->readUserData($userIdtoEdit);
 ?>
 <div class="sg-content">
 
@@ -148,20 +267,52 @@ include("../dijelovi/univerzalni/navbar.php");
             <button id="editPassword">Lozinka</button>
         </div>
 
-        <?php if($korisnik->isAdmin){  ?>
-        <div class="sg-sidebar-btn-container">
-            <button id="editRole">Uloga</button>
-        </div>
+        <?php if ($adminEdit) { ?>
+            <div class="sg-sidebar-btn-container">
+                <button id="editRole">Uloga</button>
+            </div>
         <?php } ?>
 
         <div class="sg-sidebar-btn-container">
-            <button id="deactivateAccount" >Deaktiviraj Račun</button>
+            <button id="deactivateAccount">Deaktiviraj Račun</button>
         </div>
 
 
     </div>
 
     <div class="sg-content-mid">
+
+        <!-- Display-->
+        <div id="setingsDisplayUserData">
+            <div class="sg-set-disp-user-data-main-container">
+                <div class="sg-set-disp-user-data-sub-container">
+
+                    <div class="sg-disp-user-data-container-section">
+
+                        <h1> <?php echo ($dispUserDataHeader) ?></h1>
+                    </div>
+
+                    <div class="sg-disp-user-data-container-section">
+                        <h2>Prezime Ime:</h1>
+                            <h3><?php echo ($korisnik->prezime . " " . $korisnik->ime) ?></h3>
+                    </div>
+
+                    <div class="sg-disp-user-data-container-section">
+                        <h2>Email:</h2>
+                        <h3><?php echo ($korisnik->email) ?></h3>
+                    </div>
+
+
+                    <div class="sg-disp-user-data-container-section">
+                        <h2>Uloga:</h2>
+                        <h3><?php echo ($korisnik->roleName) ?></h3>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
 
         <!--Ime / Prezime -->
         <div id="nameSFform" class="sg-autentificaiton-form-container-div sg-hide-div">
@@ -170,14 +321,12 @@ include("../dijelovi/univerzalni/navbar.php");
                 <input type="hidden" name="uid" value="<?php echo ($userIdtoEdit) ?>">
                 <input type="hidden" name="adminEdit" value="<?php echo ($adminEdit) ?>">
                 <div class="sg-autentification-col">
-                    <label>Ime:</label>
+                    <?php $fNameInput->generateInput(); ?>
 
-                    <input name="ime" value="<?php echo ($korisnik->ime) ?>">
                 </div>
 
                 <div class="sg-autentification-col">
-                    <label>Prezime:</label>
-                    <input name="prezime" value="<?php echo ($korisnik->prezime) ?>">
+                    <?php $lNameInput->generateInput(); ?>
                 </div>
 
                 <div class="sg-autentification-col sg-settings-save-btn">
@@ -189,28 +338,6 @@ include("../dijelovi/univerzalni/navbar.php");
 
         </div>
 
-        <!--Lozinka -->
-        <div id="pswrdForm" class="sg-autentificaiton-form-container-div sg-hide-div">
-
-            <form method="POST" action="postavke.php" class="sg-account-sttings-form">
-                <input type="hidden" name="uid" value="<?php echo ($userIdtoEdit) ?>">
-                <input type="hidden" name="adminEdit" value="<?php echo ($adminEdit) ?>">
-                <div class="sg-autentification-col">
-                    <label>Nova lozinka:</label>
-                    <input name="pswrd">
-                </div>
-
-                <div class="sg-autentification-col">
-                    <label>Ponovi Lozinku:</label>
-                    <input name="paswrdRpt">
-                </div>
-                <div class="sg-autentification-col sg-settings-save-btn">
-                    <button name="pswrdChng">Promjeni lozinku</button>
-                </div>
-            </form>
-
-        </div>
-
         <!--email -->
         <div id="emailForm" class="sg-autentificaiton-form-container-div sg-hide-div">
 
@@ -218,8 +345,7 @@ include("../dijelovi/univerzalni/navbar.php");
                 <input type="hidden" name="uid" value="<?php echo ($userIdtoEdit) ?>">
                 <input type="hidden" name="adminEdit" value="<?php echo ($adminEdit) ?>">
                 <div class="sg-autentification-col">
-                    <label>Email adresa</label>
-                    <input name="email" value="<?php echo ($korisnik->email) ?>">
+                    <?php $emailInput->generateInput(); ?>
                 </div>
 
                 <div class="sg-autentification-col sg-settings-save-btn">
@@ -229,6 +355,28 @@ include("../dijelovi/univerzalni/navbar.php");
             </form>
 
         </div>
+
+
+        <!--Lozinka -->
+        <div id="pswrdForm" class="sg-autentificaiton-form-container-div sg-hide-div">
+
+            <form method="POST" action="postavke.php" class="sg-account-sttings-form">
+                <input type="hidden" name="uid" value="<?php echo ($userIdtoEdit) ?>">
+                <input type="hidden" name="adminEdit" value="<?php echo ($adminEdit) ?>">
+                <div class="sg-autentification-col">
+                    <?php $pswrdInput->generateInput(); ?>
+                </div>
+
+                <div class="sg-autentification-col">
+                    <?php $pswrdRptInput->generateInput(); ?>
+                </div>
+                <div class="sg-autentification-col sg-settings-save-btn">
+                    <button name="pswrdChng">Promjeni lozinku</button>
+                </div>
+            </form>
+
+        </div>
+
 
         <!--role -->
         <div id="roleForm" class="sg-autentificaiton-form-container-div sg-hide-div">
@@ -302,8 +450,38 @@ include("../dijelovi/univerzalni/navbar.php");
     </div>
 
 </div>
-<script src="../funkcionalnost/settings/settings.js"></script>
 
+
+
+<script src="../funkcionalnost/settings/settings.js"></script>
+<script>
+
+    <?php
+    switch ($showForm) {
+        case "saveFLnames":
+            echo ("openNameSFform();");
+            break;
+        case "pswrdChng":
+            echo ("openPswrdSFform();");
+            break;
+        case "chngEmail":
+            echo ("openEmailForm();");
+            break;
+
+        case "chngRole":
+            echo ("openRoleForm();");
+            break;
+    }
+
+    ?>
+
+
+
+</script>
 <?php
+
+
+
+
 include("../dijelovi/podnozje.php");
 ?>

@@ -54,11 +54,11 @@ include("../dijelovi/univerzalni/navbar.php");
             ?>
             <div class="sg-sidebar-btn-container">
 
-                <button id="editBookBtn">Edit</button>
+                <button id="editBookBtn">Uredi</button>
             </div>
 
             <div class="sg-sidebar-btn-container">
-                <button id="deleteBookBtn">Delete</button>
+                <button id="deleteBookBtn">Izbriši</button>
             </div>
             <?php
         }

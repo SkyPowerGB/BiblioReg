@@ -3,6 +3,54 @@ body {
     background-color: bisque;
 }
 
+/**Introduction site*/
+.biblioReg-index-content{
+    display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;}
+
+.biblioReg-index-content-box{
+    color: white;
+    width: 20%;
+    min-width: 200px;
+    aspect-ratio: 2/3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    background-color: brown;
+    border-left: 25px solid rgb(84, 22, 22);
+}
+.biblioReg-index-content-box h1{
+    margin-top: 30px;
+}
+.biblioReg-index-container{
+    width: 80%;
+}
+
+.biblioReg-index-button-div{
+    
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:end;
+    border-bottom: 2px solid black;
+    margin-top: 20px;
+}
+.biblioReg-index-button-div a{
+   
+    font-size: x-large;
+    text-decoration: none;
+    color: rgb(255, 179, 179);
+}
+.biblioReg-index-button-div a:hover{
+    color: rgb(162, 255, 253);
+    cursor: pointer;
+}
+
 /* AUTENTIFICAITON FORMS --------------------------------------------------------------------------------   */
 /**/
 
@@ -365,9 +413,108 @@ body {
 
 
 
+/*---------------------------------------------------------------------------*/
+.sg-user-table-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+  
+}
+.sg-user-table{
+    width: 80%;
+    background-color: rgb(223, 213, 185);
+    border: 5px solid  rgb(129, 108, 81);
+border-collapse: collapse;
+}
+.sg-user-table th{
+    background-color: rgb(129, 108, 81);
+    color:white;
+    font-size: larger;
+    font-weight: bold;
+    padding: 10px;
+  
+}
+.sg-user-table td{
+    text-align: center;  border: 5px solid rgb(98, 71, 41);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+.sg-user-table button{
+    width: 100%;
+    height: auto;
+    border: none;
+    background-color:transparent;
+    font-size: large;
+    background-color: rgb(177, 149, 97);
+    color: white;
+}
+.deleteUserBtn:hover{
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+.editUserBtn:hover{
+    background-color: rgb(229, 199, 123);
+    color: black;
+    cursor: pointer;
+}
+
 /*UNIVERZALNO hide*/
 .sg-hide-div{
     display: none;
+}
+.sg-form-validation-error{
+    color: red;
+}
+.sg-form-validation-error-input{
+    color: black;
+    border: none;
+    outline: none;
+    outline: 2px red solid;
+    border: 5px red solid;
+}
+
+/*----POSTAVKE RAČUNA---------------------------------------------------------------------------*/
+.sg-set-disp-user-data-main-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    text-align: center;
+}
+.sg-set-disp-user-data-sub-container{
+    min-width: 30%;
+    outline: 20px solid hsl(31, 28%, 45%);
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(104, 82, 67);
+    color: white;
+    border-radius:45px ;
+}
+.sg-disp-user-data-container-section{
+    height: 50px;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content: center;
+}
+.sg-disp-user-data-container-section h1{
+    color: rgb(219, 255, 248);
+}
+
+.sg-disp-user-data-container-section h2{
+    color: rgb(255, 255, 255);
+}
+
+.sg-disp-user-data-container-section h3{
+    color: rgb(255, 227, 160);
+    margin-left: 10px;
 }
 
 @media (max-width: 768px) {

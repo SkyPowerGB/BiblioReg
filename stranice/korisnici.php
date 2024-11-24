@@ -12,6 +12,10 @@ $users = new UserTable($conn);
 $korisnik = new Korisnik($conn);
 $imePrezime = "Korisnika";
 $userIdtoDelete = 0;
+$korisnik->readUserData($_SESSION["userId"]);
+
+if(!$korisnik->isAdmin){
+    header("Location:pocetna.php");}
 
 if (isset($_POST["deleteUAC"])) {
     $uid = $_POST["userToDelete"];
@@ -59,11 +63,12 @@ include("../dijelovi/univerzalni/navbar.php");
 
 
 
-
-$users->displayUsersTable();
-
-
 ?>
+<div class="sg-user-table-container">
+<?php
+$users->displayUsersTable();
+?>
+</div>
 
 <script src="../funkcionalnost/korisnici/korisnici.js"></script>
 

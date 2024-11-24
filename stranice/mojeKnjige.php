@@ -2,6 +2,7 @@
 include("../dijelovi/head.php");
 include("../dijelovi/klase/korisnik.php");
 include("../dijelovi/klase/knjiga.php");
+include("../dijelovi/klase/validator.php");
 session_start();
 if (!isset($_SESSION["userId"])) {
    header("Location: prijava.php");
@@ -13,26 +14,83 @@ include("../dijelovi/univerzalni/navbar.php");
 ?>
 
 <?php
-$knjiga=new Knjiga($conn);
+$knjiga = new Knjiga($conn);
+$validator = new Validator();
 
-if(isset($_POST["submitDodajKnjigu"])){
-$naslov=filter_input(INPUT_POST,"naslov",FILTER_SANITIZE_STRING);
-$izdavac=filter_input(INPUT_POST,"izdavac",FILTER_SANITIZE_STRING);
-$godina=filter_input(INPUT_POST,"godina",FILTER_SANITIZE_STRING);
-if(is_numeric($godina)){
 
-  $knjiga->naslov=$naslov;
-  $knjiga->izdavac=$izdavac;
-  $knjiga->godina=$godina;
+$formInputNaslov = new FormInput(
+   "naslovInput",
+   "naslovLbl",
+   "naslov",
+   "text",
+   "",
+   "Naslov:",
+   null,
+   null
+);
+$formInputIzdavac = new FormInput(
+   "izdavacInput",
+   "izdavacLbl",
+   "izdavac",
+   "text",
+   "",
+   "Izdavac:",
+   null,
+   null
+);
+$formInputGodina = new FormInput(
+   "godinaInput",
+   "godinaLbl",
+   "godina",
+   "text",
+   "",
+   "Godina:",
+   null,
+   null
+);
 
-  $knjiga->createNewBook($_SESSION["userId"]);
-  Header("Location:mojeKnjige.php");
+if (isset($_POST["submitDodajKnjigu"])) {
+   $naslov = filter_input(INPUT_POST, "naslov", FILTER_SANITIZE_STRING);
+   $izdavac = filter_input(INPUT_POST, "izdavac", FILTER_SANITIZE_STRING);
+   $godina = filter_input(INPUT_POST, "godina", FILTER_SANITIZE_STRING);
+   $knjiga->naslov = $naslov;
+   $knjiga->izdavac = $izdavac;
+   $knjiga->godina = $godina;
+   $create=true;
+if($naslov==""){
+   $validator->showValidationMsg($formInputNaslov,"Ovo polje ne može biti prazno");
+   $create=false;
+}
+if($izdavac==""){
+   $validator->showValidationMsg($formInputIzdavac,"Ovo polje ne može biti prazno");
+   $create=false;
+   }
+
+   if (is_numeric($godina)&&$create) {
+      
+   
+
+      $knjiga->createNewBook($_SESSION["userId"]);
+      Header("Location:mojeKnjige.php");
+
+
+   }else{
+      $validator->showValidationMsg($formInputGodina,"Godina mora biti broj");
+      unset($_POST["submitDodajKnjigu"]);
+   }
 
 
 }
 
 
-}
+$formInputNaslov->inputDefaultValue=$knjiga->naslov;
+$formInputGodina->inputDefaultValue=$knjiga->godina;
+$formInputIzdavac->inputDefaultValue=$knjiga->izdavac;
+
+
+
+
+
 
 ?>
 
@@ -45,18 +103,15 @@ if(is_numeric($godina)){
    <form class="sg-new-book-form " method="POST" action="mojeKnjige.php">
 
       <div class="sg-new-book-form-part">
-         <label>Naslov:</label>
-         <input name="naslov">
+         <?php $formInputNaslov->generateInput();  ?>
       </div>
 
       <div class="sg-new-book-form-part">
-         <label>Izdavač:</label>
-         <input name="izdavac">
+      <?php $formInputIzdavac->generateInput();  ?>
       </div>
 
       <div class="sg-new-book-form-part">
-         <label>Godina:</label>
-         <input name="godina">
+      <?php $formInputGodina->generateInput();  ?>
       </div>
 
       <div class="sg-new-book-form-part">

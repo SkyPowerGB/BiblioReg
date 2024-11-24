@@ -19,7 +19,7 @@ class UserTable
         if ($stmt->execute()) {
             $result = $stmt->get_result();
             $stmt->close();
-            echo ("<table>");
+            echo ("<table class=sg-user-table>");
             echo ("<tr>");
             echo ("<th>Id</th>");
             echo ("<th>Ime</th>");
@@ -48,12 +48,12 @@ class UserTable
 
                 echo("<form method=POST action=postavke.php>");
                 echo("<input type=hidden name=adminEdit value=".true.">");
-                echo("<button name='uid' value='".$row["idKorisnik"]."'>Edit</button>");
+                echo("<button class=editUserBtn name='uid' value='".$row["idKorisnik"]."'>Uredi</button>");
                 echo("</form>");
 
 
                 echo("</td>");
-                echo("<td><button class=deleteUserBtn value=".$row["idKorisnik"]."> Delete</button></td>");
+                echo("<td><button class=deleteUserBtn value=".$row["idKorisnik"]."> Izbriši</button></td>");
 
                 echo ("</tr>");
 

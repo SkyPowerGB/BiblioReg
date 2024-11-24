@@ -224,7 +224,7 @@ validacije
     private const FS_FILTER_ERROR = "Neispravan unos";
     public function validacijeImePrezime($ime)
     {
-        if ($ime) {
+        if ($ime==null) {
             $this->validationErrCode = 1;
             return false;
         }

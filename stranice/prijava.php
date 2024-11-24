@@ -3,11 +3,39 @@
 session_start();
 include("../dijelovi/head.php");
 include("../dijelovi/klase/korisnik.php");
+include("../dijelovi/klase/validator.php");
+$validator = new Validator();
+
+
+
 
 $korisnik = new Korisnik($conn);
 
-$email;
-$password;
+$email=null;
+$password=null;
+
+
+$emailInput = new FormInput(
+    "idEmailInput",
+    "idEmailLbl",
+    "emailInput",
+    "text",
+    $email,
+    "Email:",
+    null,
+    null
+);
+
+$pswrdInput= new FormInput(
+    "idPswrdInput",
+    "idPswrdLbl",
+    "pswrdInput",
+    "password",
+    $password,
+    "Lozinka:",
+    null,
+    null
+);
 
 
 if (isset($_POST["loginSubmit"])) {
@@ -37,12 +65,17 @@ if (isset($_POST["loginSubmit"])) {
                    
                   
 
+            }else{
+                $emailInput->inputDefaultValue=$email;
+                $validator->showValidationMsg($emailInput,"Neispranvno korisničko  ime ili lozinka");
+                $validator->showValidationMsg($pswrdInput,"");
             }
 
                
 
-        };
-       
+        }else{
+        $validator->showValidationMsg($emailInput,"Korisnik ne postoji");
+        }
 
 
       
@@ -61,16 +94,18 @@ if (isset($_POST["loginSubmit"])) {
       
         <div class="sg-autentification-row">
             <div class="sg-autentification-col">
-                <label>Email*:</label>
-                <input type="text" name="emailInput">
+            <?php 
+               $emailInput->generateInput();
+                ?>
             </div>
         </div>
 
         <div class="sg-autentification-row">
             <div class="sg-autentification-col">
-                <label>Lozinka*:</label>
-                <input type="password" name="pswrdInput">
-
+              
+            <?php 
+               $pswrdInput->generateInput();
+                ?>
          
             </div>
 

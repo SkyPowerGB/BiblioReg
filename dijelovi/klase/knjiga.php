@@ -112,6 +112,8 @@ class Knjiga
 
    }
 
+   /*TODO:-validation*/
+
 
 }
 
