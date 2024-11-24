@@ -155,7 +155,7 @@ include("../dijelovi/univerzalni/navbar.php");
         <?php } ?>
 
         <div class="sg-sidebar-btn-container">
-            <button id="deactivateAccount">Deaktiviraj Račun</button>
+            <button id="deactivateAccount" >Deaktiviraj Račun</button>
         </div>
 
 

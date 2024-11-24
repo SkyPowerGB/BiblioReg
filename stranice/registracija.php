@@ -39,17 +39,17 @@ if (isset($_POST["registerSubmit"])) {
 
 <div class="sg-autentificaiton-form-container-div">
     <h1>Registracija</h1>
-    <form  method="POST" action="registracija.php">
+    <form id="jsAutValidate" method="POST" action="registracija.php">
         <div class="sg-autentification-row">
 
             <div class="sg-autentification-col">
-                <label>Ime*:</label>
-                <input type="text" name="nameInput">
+                <label id="idFnameLbl" >Ime*:</label>
+                <input id="idFnameInput" type="text" name="nameInput">
             </div>
 
             <div class="sg-autentification-col">
-                <label>Prezime*:</label>
-                <input type="text" name="sNameInput">
+                <label id="idLnameLbl" >Prezime*:</label>
+                <input id="idLnameInput" type="text" name="sNameInput">
             </div>
 
         </div>
@@ -57,18 +57,18 @@ if (isset($_POST["registerSubmit"])) {
 
         <div class="sg-autentification-row">
             <div class="sg-autentification-col">
-                <label>Email*:</label>
-                <input type="text" name="emailInput">
+                <label id="idEmailLbl" >Email*:</label>
+                <input id="idEmailInput" type="text" name="emailInput">
             </div>
         </div>
 
         <div class="sg-autentification-row">
             <div class="sg-autentification-col">
-                <label>Lozinka*:</label>
-                <input type="password" name="pswrdInput">
+                <label id="idPswrdLbl" >Lozinka*:</label>
+                <input id="idPswrdInput" type="password" name="pswrdInput">
 
-                <label>Ponoviti Lozinku*:</label>
-                <input type="password" name="pswrdRptInput">
+                <label id="idRptPswrdLbl">Ponoviti Lozinku*:</label>
+                <input id="idRptPswrdInput" name="pswrdRptInput">
 
             </div>
 
@@ -87,12 +87,12 @@ if (isset($_POST["registerSubmit"])) {
 
     </form>
     <div class="sg-autentification-scnd-btn-div">
-        <button class="sg-autentification-scnd-btn">Prijava</button>
+        <button id="gotoLoginPageBtn" class="sg-autentification-scnd-btn">Prijava</button>
     </div>
 </div>
 
 
-<script src="../funkcionalnost/registracija/registracija.js"></script>
+<script src="../funkcionalnost/autentifikacija/registracija.js"></script>
 
 
 

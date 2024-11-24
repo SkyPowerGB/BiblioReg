@@ -5,7 +5,6 @@ class Korisnik
 
     /**  @var mysqli */
     private $conn;
-
     public $userId;
     public $ime;
     public $prezime;
@@ -32,7 +31,9 @@ class Korisnik
         $stmt->bind_param("d", $userId);
         if ($stmt->execute()) {
             $row = $stmt->get_result()->fetch_assoc();
-            if($row==null){return false;}
+            if ($row == null) {
+                return false;
+            }
             $stmt->close();
             $this->ime = $row["ime"];
             $this->prezime = $row["prezime"];
@@ -44,10 +45,10 @@ class Korisnik
                 $this->isAdmin = false;
             }
             $this->roleName = $row["nazivUloga"];
-            $this->aktivan=$row["aktivan"];
+            $this->aktivan = $row["aktivan"];
             return true;
 
-           
+
         }
         return false;
     }
@@ -176,26 +177,26 @@ class Korisnik
 
     public function deleteUser($uid)
     {
-       
-       
 
-            try {
-                $sql = "select deleteUser(?) as output";
-                $stmt = $this->conn->prepare($sql);
-                $stmt->bind_param("d", $uid);
-                if ($stmt->execute()) {
-                    $out = $stmt->get_result()->fetch_assoc()["output"];
-                    $stmt->close();
-                    if ($out == 1) {
-                        return true;
-                    }
 
+
+        try {
+            $sql = "select deleteUser(?) as output";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("d", $uid);
+            if ($stmt->execute()) {
+                $out = $stmt->get_result()->fetch_assoc()["output"];
+                $stmt->close();
+                if ($out == 1) {
+                    return true;
                 }
 
-            } catch (Exception $e) {
-                return false;
             }
-        
+
+        } catch (Exception $e) {
+            return false;
+        }
+
         return false;
     }
 
@@ -217,39 +218,80 @@ validacije
 
     private $emailPattern = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
 
+    private $validationErrCode = 0;
+
+    private const FIELD_REQUIRED = "Ovo polje ne može biti prazno";
+    private const FS_FILTER_ERROR = "Neispravan unos";
     public function validacijeImePrezime($ime)
     {
+        if ($ime) {
+            $this->validationErrCode = 1;
+            return false;
+        }
 
         if (preg_match($this->FSnamePattern, $ime)) {
             return true;
         }
+        $this->validationErrCode = 2;
         return false;
     }
 
+     const PASSWORD_MISSMATCH = "Šifra se ne podudara";
+     const PASSWORD_FILTER_ERROR = "Šifra mora sadržavat najmanje 8 znakova te barem Jedno Veliko i malo slovo";
     public function validacijaSifre($sifra, $sifraPon)
     {
+        if ($sifra == null) {
+            $this->validationErrCode = 1;
+            return false;
+        }
         if ($sifra != $sifraPon) {
+            $this->validationErrCode = 3;
             return false;
         }
         if (preg_match($this->passwordPattern, $sifra)) {
             return true;
         }
+        $this->validationErrCode = 4;
         return false;
     }
 
+    const EMAIL_EIXTS = "Email postoji";
+     const EMAIL_ERROR = "Neispravan email";
+   
     public function validacijaEmail($email)
     {
+        if ($email == null) {
+            $this->validationErrCode = 1;
+            return false;
+        }
         if ($this->emailExists($email)) {
+            $this->validationErrCode = 5;
             return false;
         }
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return true;
         } else {
+            $this->validationErrCode = 6;
             return false;
         }
 
     }
 
+     const VALIDATION_ERR_DEF="neispravan unos";
+    public function getValidationMsg()
+    {
+          switch($this->validationErrCode){
+             case 1: return self::FIELD_REQUIRED;
+             case 2: return self::FS_FILTER_ERROR ;
+             case 3: return self::PASSWORD_MISSMATCH;
+             case 4: return self::PASSWORD_FILTER_ERROR;
+             case 5: return self:: EMAIL_EIXTS;
+             case 6: return self::EMAIL_ERROR ;
+             default: return self::VALIDATION_ERR_DEF; 
+
+          }
+
+    }
 
 
 
