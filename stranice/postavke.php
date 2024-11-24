@@ -16,6 +16,7 @@ $showForm = null;
 
 $korisnik = new Korisnik($conn);
 $validator = new Validator();
+$isUserAdmin=$korisnik->readUserData($userIdtoEdit);
 
 
 
@@ -267,7 +268,7 @@ $korisnik->readUserData($userIdtoEdit);
             <button id="editPassword">Lozinka</button>
         </div>
 
-        <?php if ($adminEdit) { ?>
+        <?php if ($adminEdit||$isUserAdmin) { ?>
             <div class="sg-sidebar-btn-container">
                 <button id="editRole">Uloga</button>
             </div>
