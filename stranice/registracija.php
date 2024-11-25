@@ -149,12 +149,12 @@ if (isset($_POST["registerSubmit"])) {
         $avatarPth=$fileUploader->avatarDefaultPth;
     }
     
-    echo("avatarPth:".$avatarPth);
+ 
     if ($validationOk) {
-      echo("avatarPth:".$avatarPth);
+     
         $password = password_hash($password, PASSWORD_DEFAULT);
        if( $korisnik->registerNewUserV2($firstName, $lastName, $avatarPth,$email, $password)){
-      
+         header("Locaiton:prijava.php");
        }
     }
 

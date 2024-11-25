@@ -17,9 +17,9 @@ $showForm = null;
 $korisnik = new Korisnik($conn);
 $validator = new Validator();
 $fileUploader = new FileUpload();
-$isUserAdmin = $korisnik->readUserData($userIdtoEdit);
+$korisnik->readUserData($userIdtoEdit);
 
-
+$isUserAdmin = $korisnik->isAdmin;
 
 if (isset($_POST["uid"])) {
     $userIdtoEdit = $_POST["uid"];
