@@ -14,11 +14,11 @@ class Bookshelf
 
     function displayAllBooks($uid)
     {
-        $sql = "SELECT idKnjiga,naslov,izdavac,godina,datumDodavanja,ime,prezime,idKorisnik
+        $sql = "SELECT idKnjiga,naslov,izdavac,godina,datumDodavanja,ime,prezime,idKorisnik,naslovnaSlika
                  FROM knjiga JOIN korisnici ON autorId=idKorisnik where aktivan=1 ORDER BY datumDodavanja";
            if($uid!=null){
                 
-                       $sql= "SELECT idKnjiga,naslov,izdavac,godina,datumDodavanja,ime,prezime,idKorisnik
+                       $sql= "SELECT idKnjiga,naslov,izdavac,godina,datumDodavanja,ime,prezime,idKorisnik,naslovnaSlika
                  FROM knjiga JOIN korisnici ON autorId=idKorisnik  where autorId=? and aktivan=1 ORDER BY datumDodavanja";
 
            }
@@ -38,11 +38,11 @@ class Bookshelf
         if ($knjige != null) {
             while (($row = $knjige->fetch_assoc()) != null) {
 
-                echo ('<div  class="sg-book-container">');
+                echo ('<div  class="sg-book-container" >');
                 echo ('<form method="POST" action="prikazKnjige.php">');
                 echo ('<input name="idKnjige" type="hidden"' . 'value=' . $row["idKnjiga"] . ' >');
 
-                echo ('<button class="sg-book-button">');
+                echo ('<button class="sg-book-button" style="background-image: url('.$row["naslovnaSlika"].'); background-size: cover;">');
                 echo ("<h1>");
                 echo ($row["naslov"]);
                 echo ("</h1>");

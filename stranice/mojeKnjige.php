@@ -3,6 +3,7 @@ include("../dijelovi/head.php");
 include("../dijelovi/klase/korisnik.php");
 include("../dijelovi/klase/knjiga.php");
 include("../dijelovi/klase/validator.php");
+include("../dijelovi/klase/FileUpload.php");
 session_start();
 if (!isset($_SESSION["userId"])) {
    header("Location: prijava.php");
@@ -16,7 +17,7 @@ include("../dijelovi/univerzalni/navbar.php");
 <?php
 $knjiga = new Knjiga($conn);
 $validator = new Validator();
-
+$fileUploader = new FileUpload();
 
 $formInputNaslov = new FormInput(
    "naslovInput",
@@ -49,6 +50,19 @@ $formInputGodina = new FormInput(
    null
 );
 
+$formInputFrontPageImg = new FormInput(
+   "idFrontPageInput",
+   "idFrontPageLbl",
+   "frontPageImg",
+   "file",
+   null,
+   "Naslovna slika:",
+   null,
+   null
+
+);
+
+
 if (isset($_POST["submitDodajKnjigu"])) {
    $naslov = filter_input(INPUT_POST, "naslov", FILTER_SANITIZE_STRING);
    $izdavac = filter_input(INPUT_POST, "izdavac", FILTER_SANITIZE_STRING);
@@ -56,36 +70,56 @@ if (isset($_POST["submitDodajKnjigu"])) {
    $knjiga->naslov = $naslov;
    $knjiga->izdavac = $izdavac;
    $knjiga->godina = $godina;
-   $create=true;
-if($naslov==""){
-   $validator->showValidationMsg($formInputNaslov,"Ovo polje ne može biti prazno");
-   $create=false;
-}
-if($izdavac==""){
-   $validator->showValidationMsg($formInputIzdavac,"Ovo polje ne može biti prazno");
-   $create=false;
+   $create = true;
+   if ($naslov == "") {
+      $validator->showValidationMsg($formInputNaslov, "Ovo polje ne može biti prazno");
+      $create = false;
+   }
+   if ($izdavac == "") {
+      $validator->showValidationMsg($formInputIzdavac, "Ovo polje ne može biti prazno");
+      $create = false;
    }
 
-   if (is_numeric($godina)&&$create) {
-      
-   
+   if (!is_numeric($godina)) {
+      $create = false;
+      $validator->showValidationMsg($formInputGodina, "Godina mora biti broj");
+      unset($_POST["submitDodajKnjigu"]);
+   }
+
+
+   if(!$fileUploader->isFileEmpty($formInputFrontPageImg->inputName)){
+        if($fileUploader->validateImgFileUpload($formInputFrontPageImg->inputName)){
+         if($fileUploader->UploadFile($formInputFrontPageImg->inputName)){
+              $knjiga->frontPgImg=$fileUploader->lastUploadFilePath;
+         }else{
+            $create=false;
+         }
+
+        }else{
+         $validator->showValidationMsg($formInputFrontPageImg,$fileUploader->validationErrorMsg);
+         $create=false;
+        }
+
+   } 
+
+
+   if ($create) {
+
+
 
       $knjiga->createNewBook($_SESSION["userId"]);
       Header("Location:mojeKnjige.php");
 
 
-   }else{
-      $validator->showValidationMsg($formInputGodina,"Godina mora biti broj");
-      unset($_POST["submitDodajKnjigu"]);
    }
 
 
 }
 
 
-$formInputNaslov->inputDefaultValue=$knjiga->naslov;
-$formInputGodina->inputDefaultValue=$knjiga->godina;
-$formInputIzdavac->inputDefaultValue=$knjiga->izdavac;
+$formInputNaslov->inputDefaultValue = $knjiga->naslov;
+$formInputGodina->inputDefaultValue = $knjiga->godina;
+$formInputIzdavac->inputDefaultValue = $knjiga->izdavac;
 
 
 
@@ -100,18 +134,22 @@ $formInputIzdavac->inputDefaultValue=$knjiga->izdavac;
       <button>X</button>
    </div>
 
-   <form class="sg-new-book-form " method="POST" action="mojeKnjige.php">
+   <form class="sg-new-book-form " method="POST" action="mojeKnjige.php" enctype="multipart/form-data">
 
       <div class="sg-new-book-form-part">
-         <?php $formInputNaslov->generateInput();  ?>
+         <?php $formInputNaslov->generateInput(); ?>
       </div>
 
       <div class="sg-new-book-form-part">
-      <?php $formInputIzdavac->generateInput();  ?>
+         <?php $formInputFrontPageImg->generateInput(); ?>
       </div>
 
       <div class="sg-new-book-form-part">
-      <?php $formInputGodina->generateInput();  ?>
+         <?php $formInputIzdavac->generateInput(); ?>
+      </div>
+
+      <div class="sg-new-book-form-part">
+         <?php $formInputGodina->generateInput(); ?>
       </div>
 
       <div class="sg-new-book-form-part">
