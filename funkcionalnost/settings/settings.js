@@ -6,12 +6,14 @@ const userDataDisplay = document.getElementById(userDataDisplayId);
 const nameSFform = document.getElementById("nameSFform");
 const pswrdForm = document.getElementById("pswrdForm");
 const emailForm = document.getElementById("emailForm");
+const avatarForm = document.getElementById("avatarForm");
 const roleForm = document.getElementById("roleForm");
 const confirmDeactivateForm = document.getElementById("confirmDeactivateForm");
 
 const editNameBtn = document.getElementById("editName");
 const editEmailBtn = document.getElementById("editEmail");
 const editPasswordBtn = document.getElementById("editPassword");
+const editAatarBtn = document.getElementById("editAvatar");
 const editRoleBtn = document.getElementById("editRole");
 const deactivateAccountBtn = document.getElementById("deactivateAccount");
 const sgConfirmActionBtnCancel = document.getElementById("sgConfirmActionBtnCancel");
@@ -38,6 +40,20 @@ function hideNameSFform() {
     if (!nameSFform.classList.contains(hideDivClass)) {
         nameSFform.classList.add(hideDivClass);
     }
+}
+
+function showAvatarForm() {
+
+    if (avatarForm.classList.contains(hideDivClass)) {
+        avatarForm.classList.remove(hideDivClass);
+    }
+
+}
+function hideAvatarForm() {
+    if (!avatarForm.classList.contains(hideDivClass)) {
+        avatarForm.classList.add(hideDivClass);
+    }
+
 }
 
 function showPswrdForm() {
@@ -95,6 +111,7 @@ function openNameSFform() {
     hideEmailForm();
     hideRoleForm();
     hideDisplay();
+    hideAvatarForm();
 }
 
 function openPswrdSFform() {
@@ -103,6 +120,7 @@ function openPswrdSFform() {
     hideEmailForm();
     hideRoleForm();
     hideDisplay();
+    hideAvatarForm();
 }
 
 function openEmailForm() {
@@ -111,6 +129,7 @@ function openEmailForm() {
     showEmailForm();
     hideRoleForm();
     hideDisplay();
+    hideAvatarForm();
 }
 
 function openRoleForm() {
@@ -119,12 +138,22 @@ function openRoleForm() {
     hideEmailForm();
     showRoleForm();
     hideDisplay();
+    hideAvatarForm();
+}
+
+function openAvatarForm() {
+    hideNameSFform();
+    hidePswrdForm();
+    hideEmailForm();
+    hideRoleForm();
+    showAvatarForm();
+    hideDisplay();
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
 
-   
+
     editNameBtn.addEventListener('click', () => {
         openNameSFform();
     });
@@ -147,9 +176,21 @@ document.addEventListener('DOMContentLoaded', () => {
         showConfirmDeactivateForm();
     });
 
+
+
+
     sgConfirmActionBtnCancel.addEventListener('click', () => {
         hideConfirmDeactivateForm();
     });
+
+    editAatarBtn.addEventListener('click', () => {
+        openAvatarForm();
+    })
+
+
+
+
+
 });
 
 

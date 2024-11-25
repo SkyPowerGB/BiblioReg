@@ -12,6 +12,7 @@ class Knjiga
     public $datum;
     public $autorId;
 
+    public $frontPgImg;
     public $autorIme;
     public $autorPrezime;
 
@@ -82,6 +83,8 @@ class Knjiga
 
 
     }
+
+    function updateBookDataV2($naslov,$frontPgImg, $izdavac, $godina){}
 
     function deleteBook()
     {

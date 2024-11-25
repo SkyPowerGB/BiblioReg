@@ -15,6 +15,8 @@ class Korisnik
     public $roleName;
     public $password;
 
+    public $avatarPath;
+
 
     public function __construct($conn)
     {
@@ -39,6 +41,7 @@ class Korisnik
             $this->prezime = $row["prezime"];
             $this->email = $row["email"];
             $this->password = $row["sifra"];
+            $this->avatarPath=$row["ikona"];
             if ($row["ulogaId"] == 2) {
                 $this->isAdmin = true;
             } else {
@@ -62,6 +65,27 @@ class Korisnik
             $sql = "SELECT registrirajKorisnika(?,?,?,?) AS uid";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("ssss", $ime, $prezime, $email, $pswrd);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result()->fetch_assoc()["uid"];
+                $stmt->close();
+                return $result;
+            }
+            throw new Exception("Database execution error", $stmt->error);
+
+        } catch (Exception $e) {
+            throw new Exception("Database execution error", $stmt->error);
+        }
+
+    }
+    public function registerNewUserV2($ime, $prezime,$avatarPath, $email, $pswrd)
+    {
+        //SELECT registrirajKorisnikaV2("ime","prezime","avatar","email","pswrd") vrace UID ili -1 
+
+
+        try {
+            $sql = "SELECT registrirajKorisnikaV2(?,?,?,?,?) AS uid";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("sssss", $ime, $prezime,$avatarPath, $email, $pswrd);
             if ($stmt->execute()) {
                 $result = $stmt->get_result()->fetch_assoc()["uid"];
                 $stmt->close();
@@ -125,6 +149,49 @@ class Korisnik
                 $this->userId,
                 $this->ime,
                 $this->prezime,
+                $this->aktivan,
+                $this->email,
+                $this->password,
+                $this->roleName
+            )
+        ) {
+            return false;
+        }
+
+
+        if ($stmt->execute()) {
+            $res = $stmt->get_result()->fetch_assoc()["output"];
+            $stmt->close();
+
+
+            if ($res != -1) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
+    }
+    public function updateUserDataV2()
+    {
+        // id ime , prezime ,avatar, aktivan,email,sifra,uloga
+        $sql = "SELECT azurirajKorisnikaV2(?,?,?,?,?,?,?,?) AS output";
+        $stmt = $this->conn->prepare($sql);
+
+
+        if ($this->isAdmin) {
+            $this->role = "administrator";
+        }
+
+
+        if (
+            !$stmt->bind_param(
+                "dsssdsss",
+                $this->userId,
+                $this->ime,
+                $this->prezime,
+                $this->avatarPath,
                 $this->aktivan,
                 $this->email,
                 $this->password,

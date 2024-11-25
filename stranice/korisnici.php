@@ -2,6 +2,7 @@
 include("../dijelovi/head.php");
 include("../dijelovi/klase/korisnik.php");
 include("../dijelovi/klase/userTable.php");
+include("../dijelovi/klase/FileUpload.php");
 
 session_start();
 if (!isset($_SESSION["userId"])) {
@@ -12,6 +13,7 @@ $users = new UserTable($conn);
 $korisnik = new Korisnik($conn);
 $imePrezime = "Korisnika";
 $userIdtoDelete = 0;
+$fileUploader  =new FileUpload();
 $korisnik->readUserData($_SESSION["userId"]);
 
 if(!$korisnik->isAdmin){
@@ -31,8 +33,9 @@ if (isset($_POST["deleteUAC"])) {
         }
 
     } else {
-
+        
         $korisnik->deleteUser($uid);
+        $fileUploader->DeleteFile($korisnik->avatarPath);
         header("Location: korisnici.php");
     }
 

@@ -2,7 +2,7 @@
 include("../dijelovi/head.php");
 include("../dijelovi/klase/korisnik.php");
 include("../dijelovi/klase/validator.php");
-
+include("../dijelovi/klase/FileUpload.php");
 session_start();
 if (!isset($_SESSION["userId"])) {
     header("Location: prijava.php");
@@ -16,7 +16,8 @@ $showForm = null;
 
 $korisnik = new Korisnik($conn);
 $validator = new Validator();
-$isUserAdmin=$korisnik->readUserData($userIdtoEdit);
+$fileUploader = new FileUpload();
+$isUserAdmin = $korisnik->readUserData($userIdtoEdit);
 
 
 
@@ -92,6 +93,19 @@ if (true) {
             null
         );
     }
+    if (true) {
+        $inputAvatar = new FormInput(
+            "idAvatarInput",
+            "idAvatarLbl",
+            "avatarImgFile",
+            "file",
+            null,
+            "Slika:",
+            null,
+            null
+
+        );
+    }
     //pswrd
     if (true) {
         $pswrdInput = new FormInput(
@@ -157,7 +171,7 @@ if (isset($_POST["pswrdChng"])) {
     $pswrdRpt = filter_input(INPUT_POST, "paswrdRpt", FILTER_SANITIZE_STRING);
 
     if (!$korisnik->validacijaSifre($pswrd, $pswrdRpt) && $validationOk) {
-        $validator->showValidationMsg($pswrdInput,$korisnik->getValidationMsg());
+        $validator->showValidationMsg($pswrdInput, $korisnik->getValidationMsg());
         $validationOk = false;
 
     }
@@ -180,7 +194,7 @@ if (isset($_POST["chngEmail"])) {
 
     if (!$korisnik->validacijaEmail($email) && $validationOk) {
         $validationOk = false;
-        $validator->showValidationMsg($emailInput,$korisnik->getValidationMsg());
+        $validator->showValidationMsg($emailInput, $korisnik->getValidationMsg());
     }
 
     $korisnik->email = $email;
@@ -201,13 +215,41 @@ if (isset($_POST["chngRole"])) {
     echo ($korisnik->roleName);
 }
 
+if (isset($_POST["chngAvatar"])) {
+    
+    $showForm = "chngAvatar";
+    if (!$fileUploader->isFileEmpty($inputAvatar->inputName) && $validationOk) {
+        if (!$fileUploader->validateImgFileUpload($inputAvatar->inputName)) {
+            $validator->showValidationMsg($inputAvatar, $fileUploader->validationErrorMsg);
+            $validationOk = false;
+        } else {
+            if ($fileUploader->UploadFile($inputAvatar->inputName)) {
+                $fileUploader->DeleteFile($korisnik->avatarPath);
+                $avatarPth = $fileUploader->lastUploadFilePath;
+                $korisnik->avatarPath=$avatarPth;
+                $update=true;
+            } else {
+                $validator->showValidationMsg($inputAvatar, $fileUploader->uploadErrorMsg);
+                $validationOk = false;
+            }
+
+        }
+
+
+    }
+
+}
+
 if ($update && $validationOk) {
 
-    if ($korisnik->updateUserData() && !$adminEdit) {
+   
+    if ($korisnik->updateUserDatav2() && !$adminEdit) {
         header("Location:postavke.php");
     } else {
         header("Location:korisnici.php");
     }
+
+
 
 
 } else {
@@ -215,6 +257,7 @@ if ($update && $validationOk) {
     unset($_POST["pswrdChng"]);
     unset($_POST["chngEmail"]);
     unset($_POST["chngRole"]);
+    unset($_POST["chngAvatar"]);
 
 }
 
@@ -261,6 +304,10 @@ $korisnik->readUserData($userIdtoEdit);
         </div>
 
         <div class="sg-sidebar-btn-container">
+            <button id="editAvatar">Slika</button>
+        </div>
+
+        <div class="sg-sidebar-btn-container">
             <button id="editEmail">Email</button>
         </div>
 
@@ -268,7 +315,7 @@ $korisnik->readUserData($userIdtoEdit);
             <button id="editPassword">Lozinka</button>
         </div>
 
-        <?php if ($adminEdit||$isUserAdmin) { ?>
+        <?php if ($adminEdit || $isUserAdmin) { ?>
             <div class="sg-sidebar-btn-container">
                 <button id="editRole">Uloga</button>
             </div>
@@ -356,6 +403,24 @@ $korisnik->readUserData($userIdtoEdit);
             </form>
 
         </div>
+
+        <div id="avatarForm" class="sg-autentificaiton-form-container-div sg-hide-div" >
+
+            <form method="POST" action="postavke.php" class="sg-account-sttings-form" enctype="multipart/form-data">
+                <input type="hidden" name="uid" value="<?php echo ($userIdtoEdit) ?>">
+                <input type="hidden" name="adminEdit" value="<?php echo ($adminEdit) ?>">
+                <div class="sg-autentification-col">
+                    <?php $inputAvatar->generateInput() ?>
+                </div>
+
+                <div class="sg-autentification-col sg-settings-save-btn">
+                    <button name="chngAvatar">Promjeni sliku profila</button>
+                </div>
+
+            </form>
+
+        </div>
+
 
 
         <!--Lozinka -->
@@ -471,6 +536,9 @@ $korisnik->readUserData($userIdtoEdit);
 
         case "chngRole":
             echo ("openRoleForm();");
+            break;
+            case "chngAvatar":
+                echo("openAvatarForm()");
             break;
     }
 

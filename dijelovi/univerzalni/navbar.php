@@ -20,11 +20,17 @@
    </ul>
    <div class="sg-nav-account">
 
-      <button id="showAccountOptions">
+      <button id="showAccountOptions"  >
          <?php
+         
          echo ($korisnik->ime);
          echo (" ");
          echo ($korisnik->prezime);
+         if(file_exists($korisnik->avatarPath)){
+         
+         echo("<img src=".$korisnik->avatarPath.">");}else{
+            echo("<img src=../spremiste/avatarDefault.png>");
+         }
 
          ?>
       </button>

@@ -70,16 +70,21 @@
     height: 50px;
     
 }
-.sg-nav-account button{
+#showAccountOptions {
+    
     height: 100%;
     width: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     background-color: inherit;
     border:none;
     font-size:medium;
     color:inherit;
 }
 
-.sg-nav-account button:hover{
+#showAccountOptions:hover{
     background-color: blanchedalmond;
     cursor: pointer;
   
@@ -164,7 +169,10 @@ display: none;
    top:34px;
 }
 
-
+#showAccountOptions img{
+  
+height :inherit;
+}
 
 @media (max-width: 768px) {
    
